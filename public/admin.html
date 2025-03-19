@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reservas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function cargarReservas() {
+            let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+            let lista = document.getElementById("lista-reservas");
+            lista.innerHTML = "";
+            
+            if (reservas.length === 0) {
+                lista.innerHTML = "<p class='text-gray-500'>No hay reservas aún.</p>";
+                return;
+            }
+            
+            reservas.forEach((reserva, index) => {
+                let item = document.createElement("li");
+                item.className = "border-b py-2 p-2 bg-gray-100 rounded-lg flex justify-between items-center";
+                item.innerHTML = `${reserva.nombre} - ${reserva.servicio} a las ${reserva.hora}`;
+                
+                let btnEliminar = document.createElement("button");
+                btnEliminar.textContent = "Eliminar";
+                btnEliminar.className = "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700";
+                btnEliminar.onclick = function() {
+                    eliminarReserva(index);
+                };
+                
+                item.appendChild(btnEliminar);
+                lista.appendChild(item);
+            });
+        }
+
+        function eliminarReserva(index) {
+            let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+            reservas.splice(index, 1);
+            localStorage.setItem("reservas", JSON.stringify(reservas));
+            cargarReservas();
+        }
+        
+        window.onload = cargarReservas;
+    </script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-gray-900 text-white py-6 text-center">
+        <h1 class="text-4xl font-bold">Panel de Administración</h1>
+    </header>
+    
+    <div class="container mx-auto py-8">
+        <h2 class="text-3xl font-bold text-center mb-6">Turnos Reservados</h2>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <ul id="lista-reservas"></ul>
+        </div>
+    </div>
+    
+    <footer class="bg-gray-900 text-white py-6 mt-10 text-center">
+        <div class="container mx-auto text-center">
+            <p class="text-lg">&copy; 2024 Max Styles. Todos los derechos reservados.</p>
+            <p class="text-sm text-gray-400">Síguenos en redes sociales</p>
+        </div>
+    </footer>
+</body>
+</html>
+

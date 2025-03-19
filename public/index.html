@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Styles - Barbería</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function reservarTurno(servicio) {
+            let nombre = prompt("Ingresa tu nombre:");
+            if (!nombre) return alert("Debes ingresar un nombre.");
+
+            let hora = prompt("Ingresa la hora (10 AM - 7 PM):");
+            if (!hora || !/^([1][0-9]|7) (AM|PM)$/i.test(hora)) return alert("Hora inválida. Ingresa una entre 10 AM y 7 PM.");
+
+            let reservas = JSON.parse(localStorage.getItem("reservas")) || [];
+
+            // Verificar si ya hay un turno en esa hora
+            if (reservas.some(reserva => reserva.hora === hora)) {
+                alert("Ya hay un turno reservado a esa hora.");
+                return;
+            }
+
+            // Guardar reserva
+            reservas.push({ nombre, servicio, hora });
+            localStorage.setItem("reservas", JSON.stringify(reservas));
+            alert(`Turno reservado para ${nombre} a las ${hora}`);
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-gray-900 text-white py-6 text-center">
+        <h1 class="text-4xl font-bold">Max Styles - Barbería</h1>
+    </header>
+
+    <div class="container mx-auto py-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Nuestros Servicios</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold mb-2">Corte de cabello</h3>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="reservarTurno('Corte de cabello')">Reservar Turno</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold mb-2">Barba</h3>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="reservarTurno('Barba')">Reservar Turno</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold mb-2">Cejas</h3>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="reservarTurno('Cejas')">Reservar Turno</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold mb-2">Combo Corte + Barba + Cejas</h3>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="reservarTurno('Combo Corte + Barba + Cejas')">Reservar Turno</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-white py-6 mt-10 text-center">
+        <p class="text-lg">&copy; 2024 Max Styles. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
+
+
